@@ -1,0 +1,358 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="description"
+    content="Explore the services offered by Galaxy Digital Partners."
+  >
+
+  <meta name="theme-color" content="#071a35">
+
+  <title>Our Services | Galaxy Digital Partners</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="pages.css">
+</head>
+
+<body>
+
+  <div class="top-glow"></div>
+
+  <!-- HEADER -->
+  <header class="site-header" id="top">
+
+    <div class="container nav-wrap">
+
+      <a class="brand" href="index.html" aria-label="Galaxy Digital Partners home">
+        <span class="brand-mark">✦</span>
+
+        <span class="brand-text">
+          Galaxy Digital
+          <small>PARTNERS</small>
+        </span>
+      </a>
+
+      <button
+        class="menu-toggle"
+        id="menuToggle"
+        aria-label="Open navigation"
+        aria-expanded="false"
+        aria-controls="mainNav"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="main-nav" id="mainNav">
+
+        <a class="nav-link" href="index.html">Home</a>
+        <a class="nav-link" href="about.html">About</a>
+        <a class="nav-link active" href="services.html">Services</a>
+        <a class="nav-link" href="partners.html">Who We Work With</a>
+        <a class="nav-link" href="contact.html">Contact</a>
+
+        <a class="nav-cta" href="contact.html">
+          Let's Connect <span>↗</span>
+        </a>
+
+      </nav>
+
+    </div>
+
+  </header>
+
+  <main>
+
+    <!-- PAGE HERO -->
+    <section class="page-hero">
+
+      <div class="container">
+
+        <div class="breadcrumb">
+          <a href="index.html">Home</a>
+          <span>/</span>
+          <span>Services</span>
+        </div>
+
+        <div class="eyebrow">
+          WHAT WE OFFER
+        </div>
+
+        <h1>
+          Explore Our
+          <span>Services</span>
+        </h1>
+
+        <p>
+          Discover the services offered by Galaxy Digital Partners.
+          Select a service to learn more about its details,
+          benefits, and requirements.
+        </p>
+
+      </div>
+
+    </section>
+
+    <!-- SERVICES LIST -->
+    <section class="page-content">
+
+      <div class="container">
+
+        <div class="page-heading">
+
+          <div>
+            <div class="eyebrow">OUR SERVICES</div>
+            <h2>Available <span>Services</span></h2>
+          </div>
+
+          <p>
+            Services published by Galaxy Digital Partners
+            are displayed here automatically.
+          </p>
+
+        </div>
+
+        <!-- Supabase dynamically inserts published services here. -->
+        <div
+          class="service-grid"
+          id="servicesPageGrid"
+          aria-live="polite"
+        >
+
+          <p class="services-status">
+            Loading services...
+          </p>
+
+        </div>
+
+        <div class="services-empty-contact">
+
+          <p>
+            Have questions about a service or want to discuss
+            a possible partnership?
+          </p>
+
+          <a class="button button-yellow" href="contact.html">
+            Contact Us <span>→</span>
+          </a>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+
+    <div class="container footer-main">
+
+      <a class="brand footer-brand" href="index.html">
+
+        <span class="brand-mark">✦</span>
+
+        <span class="brand-text">
+          Galaxy Digital
+          <small>PARTNERS</small>
+        </span>
+
+      </a>
+
+      <p>
+        Publisher Monetization
+        <span>•</span>
+        Digital Advertising
+        <span>•</span>
+        Ad Revenue Optimization
+      </p>
+
+      <a class="back-top" href="#top" id="backToTop">
+        Back to top ↑
+      </a>
+
+    </div>
+
+    <div class="container footer-bottom">
+
+      <span>
+        © <span id="year"></span>
+        Galaxy Digital Partners. All rights reserved.
+      </span>
+
+      <span>
+        Built for digital publishing partnerships.
+      </span>
+
+    </div>
+
+  </footer>
+
+  <!-- GENERAL WEBSITE INTERACTIONS -->
+  <script src="script.js"></script>
+
+  <!-- SUPABASE SERVICES CONNECTION -->
+  <script type="module">
+
+    import { supabase } from "./supabase.js";
+
+    const servicesGrid = document.getElementById("servicesPageGrid");
+
+    function escapeHTML(value) {
+
+      return String(value ?? "").replace(/[&<>"']/g, function(character) {
+
+        const characters = {
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#039;"
+        };
+
+        return characters[character];
+
+      });
+
+    }
+
+    async function loadServicesPage() {
+
+      if (!servicesGrid) return;
+
+      servicesGrid.innerHTML = `
+        <p class="services-status">Loading services...</p>
+      `;
+
+      try {
+
+        const { data: services, error } = await supabase
+
+          .from("services")
+
+          .select(`
+            id,
+            slug,
+            title,
+            intro,
+            description,
+            sort_order,
+            created_at
+          `)
+
+          .eq("is_published", true)
+
+          .order("sort_order", { ascending: true })
+
+          .order("created_at", { ascending: false });
+
+        if (error) {
+          throw error;
+        }
+
+        if (!services || services.length === 0) {
+
+          servicesGrid.innerHTML = `
+            <div class="services-empty">
+              <h3>No services available yet.</h3>
+              <p>
+                Our services are currently being updated.
+                Please check back soon.
+              </p>
+            </div>
+          `;
+
+          return;
+
+        }
+
+        servicesGrid.innerHTML = services.map(function(service, index) {
+
+          const title = escapeHTML(service.title);
+
+          const description = escapeHTML(
+            service.intro ||
+            service.description ||
+            "Select this service to learn more."
+          );
+
+          const slug = encodeURIComponent(service.slug);
+
+          const number = String(index + 1).padStart(2, "0");
+
+          return `
+
+            <article class="service-card reveal">
+
+              <div class="service-icon">
+                ✦
+              </div>
+
+              <span class="card-number">
+                ${number}
+              </span>
+
+              <h3>
+                ${title}
+              </h3>
+
+              <p>
+                ${description}
+              </p>
+
+              <a
+                href="service.html?service=${slug}"
+                aria-label="Learn more about ${title}"
+              >
+                ↗
+              </a>
+
+            </article>
+
+          `;
+
+        }).join("");
+
+        // Make dynamically generated cards visible.
+        servicesGrid.querySelectorAll(".reveal").forEach(function(card) {
+          card.classList.add("visible");
+        });
+
+      } catch (error) {
+
+        console.error("Services page error:", error);
+
+        servicesGrid.innerHTML = `
+          <div class="services-empty">
+            <h3>Unable to load services</h3>
+            <p>
+              Please try again later.
+            </p>
+          </div>
+        `;
+
+      }
+
+    }
+
+    loadServicesPage();
+
+  </script>
+
+</body>
+</html>

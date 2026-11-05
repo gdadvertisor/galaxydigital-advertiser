@@ -1,0 +1,1257 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard | Galaxy Digital Partners</title>
+
+<style>
+:root {
+  --navy: #0f2d52;
+  --gold: #eabf45;
+  --background: #f3f6fa;
+  --white: #ffffff;
+  --text: #24364b;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --red: #b42318;
+  --green: #166534;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: var(--background);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+header {
+  background: var(--navy);
+  color: white;
+  padding: 18px 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+
+header h1 {
+  font-size: 21px;
+  letter-spacing: .3px;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 7px;
+  padding: 11px 17px;
+  font-weight: bold;
+  font-size: 13px;
+  transition: .2s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  opacity: .9;
+}
+
+button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.logout {
+  background: var(--gold);
+  color: var(--navy);
+}
+
+main {
+  width: min(100% - 32px, 1050px);
+  margin: 35px auto 60px;
+}
+
+.welcome {
+  margin-bottom: 22px;
+}
+
+.welcome h2 {
+  font-size: 27px;
+  color: var(--navy);
+}
+
+.welcome p {
+  color: var(--muted);
+  margin-top: 5px;
+  font-size: 14px;
+}
+
+#adminStatus {
+  background: #eaf1f8;
+  border: 1px solid #d8e4f0;
+  border-radius: 8px;
+  padding: 11px 14px;
+  color: var(--navy);
+  font-size: 13px;
+  margin-bottom: 22px;
+}
+
+.panel {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 26px;
+  margin-bottom: 22px;
+  box-shadow: 0 3px 12px rgba(15,45,82,.035);
+}
+
+.panel-heading {
+  margin-bottom: 22px;
+}
+
+.panel-heading h2 {
+  color: var(--navy);
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+
+.panel-heading p {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+h3 {
+  color: var(--navy);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.field {
+  min-width: 0;
+}
+
+.field.full {
+  grid-column: 1 / -1;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  font-size: 13px;
+  margin-bottom: 7px;
+  color: var(--text);
+}
+
+input, textarea, select {
+  display: block;
+  width: 100%;
+  padding: 12px 13px;
+  border: 1px solid #d5dce5;
+  border-radius: 7px;
+  font: inherit;
+  font-size: 14px;
+  color: var(--text);
+  background: white;
+  transition: .2s;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(234,191,69,.15);
+}
+
+textarea {
+  min-height: 105px;
+  resize: vertical;
+}
+
+input[type="file"] {
+  padding: 9px;
+  background: #f8fafc;
+}
+
+input[type="file"]::file-selector-button {
+  background: var(--navy);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.field-hint {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.publish-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.publish-option input {
+  width: 17px;
+  height: 17px;
+  accent-color: var(--navy);
+}
+
+.publish-option label {
+  margin: 0;
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.save-button {
+  background: var(--navy);
+  color: white;
+}
+
+.cancel-button {
+  background: #e2e8f0;
+  color: var(--text);
+}
+
+.edit-button {
+  background: var(--gold);
+  color: var(--navy);
+}
+
+.delete-button {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.replace-button {
+  background: #eaf1f8;
+  color: var(--navy);
+}
+
+#message, #error,
+#galleryMessage, #galleryError {
+  font-size: 13px;
+  margin-top: 8px;
+  overflow-wrap: anywhere;
+}
+
+#message, #galleryMessage {
+  color: var(--green);
+}
+
+#error, #galleryError {
+  color: var(--red);
+}
+
+.service-card {
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 17px;
+  margin-bottom: 12px;
+}
+
+.service-card h3 {
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.service-card p {
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 8px;
+  overflow-wrap: anywhere;
+}
+
+.status {
+  display: inline-block;
+  padding: 4px 9px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: bold;
+  margin: 3px 0 12px;
+}
+
+.published {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.draft {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.card-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.card-actions button {
+  font-size: 12px;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.gallery-card {
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  overflow: hidden;
+  background: white;
+}
+
+.gallery-card img {
+  width: 100%;
+  height: 175px;
+  object-fit: cover;
+  display: block;
+  background: #e2e8f0;
+}
+
+.gallery-info {
+  padding: 13px;
+}
+
+.gallery-info h3 {
+  font-size: 14px;
+  margin-bottom: 5px;
+  overflow-wrap: anywhere;
+}
+
+.gallery-info p {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+  margin-bottom: 12px;
+  overflow-wrap: anywhere;
+}
+
+.gallery-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.gallery-actions button {
+  padding: 8px 10px;
+  font-size: 11px;
+}
+
+.gallery-empty {
+  padding: 16px;
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.section-divider {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: 25px 0;
+}
+
+@media(max-width: 750px) {
+  .gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media(max-width: 550px) {
+  header {
+    padding: 16px 20px;
+  }
+
+  header h1 {
+    font-size: 17px;
+  }
+
+  main {
+    width: calc(100% - 24px);
+    margin-top: 25px;
+  }
+
+  .welcome h2 {
+    font-size: 23px;
+  }
+
+  .panel {
+    padding: 18px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .field.full {
+    grid-column: auto;
+  }
+
+  .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gallery-card img {
+    height: 210px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Galaxy Digital Partners</h1>
+  <button class="logout" id="logoutButton">Sign Out</button>
+</header>
+
+<main>
+
+  <section class="welcome">
+    <h2>Admin Dashboard</h2>
+    <p>Manage your website services and gallery images.</p>
+  </section>
+
+  <p id="adminStatus">Verifying administrator...</p>
+
+  <!-- ADD / EDIT SERVICE -->
+
+  <section class="panel">
+
+    <div class="panel-heading">
+      <h2 id="formHeading">Add New Service</h2>
+      <p>Create and manage the services displayed on your website.</p>
+    </div>
+
+    <form id="serviceForm">
+
+      <div class="form-grid">
+
+        <div class="field">
+          <label for="title">Service Title *</label>
+          <input id="title" type="text" required
+            placeholder="Google Ad Manager Solutions">
+        </div>
+
+        <div class="field">
+          <label for="slug">Service URL Slug</label>
+          <input id="slug" type="text"
+            placeholder="google-ad-manager">
+          <p class="field-hint">Leave blank to generate automatically.</p>
+        </div>
+
+        <div class="field full">
+          <label for="intro">Short Introduction</label>
+          <textarea id="intro"
+            placeholder="A short introduction to this service..."></textarea>
+        </div>
+
+        <div class="field full">
+          <label for="description">Full Description</label>
+          <textarea id="description"
+            placeholder="Explain this service in detail..."></textarea>
+        </div>
+
+        <div class="field">
+          <label for="benefits">Benefits</label>
+          <textarea id="benefits"
+            placeholder="Enter one benefit per line"></textarea>
+        </div>
+
+        <div class="field">
+          <label for="requirements">Requirements</label>
+          <textarea id="requirements"
+            placeholder="Enter one requirement per line"></textarea>
+        </div>
+
+        <div class="field">
+          <label for="sortOrder">Display Order</label>
+          <input id="sortOrder" type="number" value="0">
+        </div>
+
+        <div class="field">
+          <label>Publication Status</label>
+          <div class="publish-option">
+            <input id="published" type="checkbox">
+            <label for="published">Publish this service</label>
+          </div>
+        </div>
+
+        <div class="field full">
+          <div class="form-actions">
+            <button class="save-button" type="submit" id="saveButton">
+              Save Service
+            </button>
+
+            <button class="cancel-button" type="button"
+              id="cancelButton" hidden>
+              Cancel Editing
+            </button>
+          </div>
+
+          <p id="message" role="status"></p>
+          <p id="error" role="alert"></p>
+        </div>
+
+      </div>
+    </form>
+  </section>
+
+  <!-- GALLERY MANAGER -->
+
+  <section class="panel">
+
+    <div class="panel-heading">
+      <h2>Gallery Manager</h2>
+      <p>Upload and manage images for your individual services.</p>
+    </div>
+
+    <form id="galleryForm">
+
+      <div class="form-grid">
+
+        <div class="field">
+          <label for="galleryService">Select Service *</label>
+          <select id="galleryService" required>
+            <option value="">Loading services...</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="imageFile">Choose Image *</label>
+          <input id="imageFile" type="file"
+            accept="image/jpeg,image/png,image/webp,image/gif" required>
+          <p class="field-hint">JPG, PNG, WEBP or GIF. Maximum 8 MB.</p>
+        </div>
+
+        <div class="field">
+          <label for="imageTitle">Image Title</label>
+          <input id="imageTitle" type="text"
+            placeholder="Image title">
+        </div>
+
+        <div class="field">
+          <label for="imageDescription">Image Description</label>
+          <textarea id="imageDescription"
+            placeholder="Describe this image..."></textarea>
+        </div>
+
+        <div class="field full">
+          <button class="save-button" type="submit" id="uploadButton">
+            Upload Image
+          </button>
+
+          <p id="galleryMessage" role="status"></p>
+          <p id="galleryError" role="alert"></p>
+        </div>
+
+      </div>
+    </form>
+
+    <hr class="section-divider">
+
+    <div class="panel-heading">
+      <h2 style="font-size:17px;">Uploaded Images</h2>
+      <p>Images belonging to the selected service.</p>
+    </div>
+
+    <div id="galleryList" class="gallery-empty">
+      Select a service to view its images.
+    </div>
+
+  </section>
+
+  <!-- EXISTING SERVICES -->
+
+  <section class="panel">
+
+    <div class="panel-heading">
+      <h2>Existing Services</h2>
+      <p>Edit, publish or remove your existing services.</p>
+    </div>
+
+    <div id="serviceList">Loading services...</div>
+
+  </section>
+
+</main>
+
+<script type="module">
+import { supabase } from "./supabase.js";
+
+const form = document.getElementById("serviceForm");
+const serviceList = document.getElementById("serviceList");
+const message = document.getElementById("message");
+const errorBox = document.getElementById("error");
+const saveButton = document.getElementById("saveButton");
+const cancelButton = document.getElementById("cancelButton");
+
+const galleryForm = document.getElementById("galleryForm");
+const galleryService = document.getElementById("galleryService");
+const imageFile = document.getElementById("imageFile");
+const imageTitle = document.getElementById("imageTitle");
+const imageDescription = document.getElementById("imageDescription");
+const uploadButton = document.getElementById("uploadButton");
+const galleryList = document.getElementById("galleryList");
+const galleryMessage = document.getElementById("galleryMessage");
+const galleryError = document.getElementById("galleryError");
+
+let editingId = null;
+
+function makeSlug(text) {
+  return text.toLowerCase().trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+function linesToArray(text) {
+  return text.split("\n")
+    .map(item => item.trim())
+    .filter(Boolean);
+}
+
+function arrayToLines(items) {
+  return Array.isArray(items) ? items.join("\n") : "";
+}
+
+function createTextElement(tag, className, content) {
+  const element = document.createElement(tag);
+  if (className) element.className = className;
+  element.textContent = content;
+  return element;
+}
+
+/* ADMIN VERIFICATION */
+
+async function checkAdmin() {
+  const { data, error } = await supabase.auth.getUser();
+
+  if (error || !data.user) {
+    window.location.replace("login.html");
+    return false;
+  }
+
+  const { data: admin, error: adminError } = await supabase
+    .from("admin_users")
+    .select("user_id")
+    .eq("user_id", data.user.id)
+    .maybeSingle();
+
+  if (adminError || !admin) {
+    await supabase.auth.signOut();
+    window.location.replace("login.html");
+    return false;
+  }
+
+  document.getElementById("adminStatus").textContent =
+    "Administrator verified: " + data.user.email;
+
+  return true;
+}
+
+/* SERVICES */
+
+async function loadServices() {
+  serviceList.textContent = "Loading services...";
+
+  const { data, error } = await supabase
+    .from("services")
+    .select("*")
+    .order("sort_order", { ascending: true });
+
+  if (error) {
+    serviceList.textContent = "Could not load services: " + error.message;
+    return;
+  }
+
+  serviceList.replaceChildren();
+
+  if (!data || data.length === 0) {
+    serviceList.textContent = "No services added yet.";
+  } else {
+    data.forEach(service => {
+      const card = document.createElement("article");
+      card.className = "service-card";
+
+      card.appendChild(createTextElement("h3", "", service.title));
+      card.appendChild(createTextElement("p", "", service.slug));
+
+      card.appendChild(createTextElement(
+        "p", "", service.intro || "No introduction added."
+      ));
+
+      card.appendChild(createTextElement(
+        "span",
+        "status " + (service.is_published ? "published" : "draft"),
+        service.is_published ? "Published" : "Draft"
+      ));
+
+      const actions = document.createElement("div");
+      actions.className = "card-actions";
+
+      const editButton = createTextElement(
+        "button", "edit-button", "Edit"
+      );
+      editButton.type = "button";
+      editButton.addEventListener("click", () => editService(service));
+
+      const deleteButton = createTextElement(
+        "button", "delete-button", "Delete"
+      );
+      deleteButton.type = "button";
+      deleteButton.addEventListener("click", () => deleteService(service));
+
+      actions.append(editButton, deleteButton);
+      card.appendChild(actions);
+      serviceList.appendChild(card);
+    });
+  }
+
+  await loadGalleryServices(data || []);
+}
+
+function editService(service) {
+  editingId = service.id;
+
+  document.getElementById("title").value = service.title || "";
+  document.getElementById("slug").value = service.slug || "";
+  document.getElementById("intro").value = service.intro || "";
+  document.getElementById("description").value =
+    service.description || "";
+  document.getElementById("benefits").value =
+    arrayToLines(service.benefits);
+  document.getElementById("requirements").value =
+    arrayToLines(service.requirements);
+  document.getElementById("sortOrder").value =
+    service.sort_order ?? 0;
+  document.getElementById("published").checked =
+    service.is_published === true;
+
+  document.getElementById("formHeading").textContent = "Edit Service";
+  saveButton.textContent = "Update Service";
+  cancelButton.hidden = false;
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function resetForm() {
+  editingId = null;
+  form.reset();
+
+  document.getElementById("sortOrder").value = 0;
+  document.getElementById("formHeading").textContent = "Add New Service";
+
+  saveButton.textContent = "Save Service";
+  cancelButton.hidden = true;
+  message.textContent = "";
+  errorBox.textContent = "";
+}
+
+cancelButton.addEventListener("click", resetForm);
+
+form.addEventListener("submit", async event => {
+  event.preventDefault();
+
+  message.textContent = "";
+  errorBox.textContent = "";
+  saveButton.disabled = true;
+
+  const title = document.getElementById("title").value.trim();
+
+  const service = {
+    title,
+    slug: makeSlug(document.getElementById("slug").value || title),
+    intro: document.getElementById("intro").value.trim(),
+    description: document.getElementById("description").value.trim(),
+    benefits: linesToArray(document.getElementById("benefits").value),
+    requirements: linesToArray(
+      document.getElementById("requirements").value
+    ),
+    sort_order: Number(
+      document.getElementById("sortOrder").value
+    ) || 0,
+    is_published: document.getElementById("published").checked
+  };
+
+  try {
+    let result;
+
+    if (editingId) {
+      result = await supabase
+        .from("services")
+        .update(service)
+        .eq("id", editingId);
+    } else {
+      result = await supabase
+        .from("services")
+        .insert(service);
+    }
+
+    if (result.error) throw result.error;
+
+    resetForm();
+    message.textContent = "Service saved successfully!";
+    await loadServices();
+
+  } catch (error) {
+    errorBox.textContent = error.message;
+  } finally {
+    saveButton.disabled = false;
+  }
+});
+
+
+async function deleteService(service) {
+
+  const confirmed = window.confirm(
+    "Delete the service '" + service.title +
+    "'? Its related gallery records and images will also be removed."
+  );
+
+  if (!confirmed) return;
+
+  message.textContent = "";
+  errorBox.textContent = "";
+
+  try {
+
+    // First, collect the image paths belonging to this service.
+
+    const {
+      data: images,
+      error: imageQueryError
+    } = await supabase
+      .from("service_images")
+      .select("image_path")
+      .eq("service_id", service.id);
+
+    if (imageQueryError) {
+      throw imageQueryError;
+    }
+
+    // Delete the service.
+    // Supabase cascade will delete its gallery database records.
+
+    const {
+      error: deleteError
+    } = await supabase
+      .from("services")
+      .delete()
+      .eq("id", service.id);
+
+    if (deleteError) {
+      throw deleteError;
+    }
+
+    // Remove the actual image files from Supabase Storage.
+
+    if (images && images.length > 0) {
+
+      const imagePaths = images.map(image => image.image_path);
+
+      const {
+        error: storageError
+      } = await supabase.storage
+        .from("service-images")
+        .remove(imagePaths);
+
+      if (storageError) {
+
+        message.textContent =
+          "Service deleted, but some storage images could not be removed: " +
+          storageError.message;
+
+      } else {
+
+        message.textContent =
+          "Service and its gallery images deleted successfully!";
+
+      }
+
+    } else {
+
+      message.textContent = "Service deleted successfully!";
+
+    }
+
+    // Refresh dashboard.
+
+    await loadServices();
+
+  } catch (error) {
+
+    errorBox.textContent = error.message;
+
+  }
+
+}
+
+
+/* GALLERY */
+
+async function loadGalleryServices(services) {
+  const previousValue = galleryService.value;
+
+  galleryService.replaceChildren();
+
+  const firstOption = document.createElement("option");
+  firstOption.value = "";
+  firstOption.textContent = "Choose a service";
+  galleryService.appendChild(firstOption);
+
+  services.forEach(service => {
+    const option = document.createElement("option");
+    option.value = service.id;
+    option.textContent = service.title;
+    galleryService.appendChild(option);
+  });
+
+  if (services.some(service => service.id === previousValue)) {
+    galleryService.value = previousValue;
+  } else if (services.length > 0) {
+    galleryService.value = services[0].id;
+  }
+
+  if (galleryService.value) {
+    await loadGalleryImages();
+  } else {
+    galleryList.textContent = "Add a service before uploading images.";
+    galleryList.className = "gallery-empty";
+  }
+}
+
+function getPublicImageUrl(path) {
+  const { data } = supabase.storage
+    .from("service-images")
+    .getPublicUrl(path);
+
+  return data.publicUrl;
+}
+
+async function loadGalleryImages() {
+  const serviceId = galleryService.value;
+
+  if (!serviceId) {
+    galleryList.textContent = "Select a service to view its images.";
+    galleryList.className = "gallery-empty";
+    return;
+  }
+
+  galleryList.textContent = "Loading images...";
+  galleryList.className = "gallery-empty";
+
+  const { data, error } = await supabase
+    .from("service_images")
+    .select("*")
+    .eq("service_id", serviceId)
+    .order("sort_order", { ascending: true });
+
+  if (error) {
+    galleryList.textContent =
+      "Could not load images: " + error.message;
+    return;
+  }
+
+  galleryList.replaceChildren();
+
+  if (!data || data.length === 0) {
+    galleryList.textContent = "No images uploaded for this service yet.";
+    galleryList.className = "gallery-empty";
+    return;
+  }
+
+  galleryList.className = "gallery-grid";
+
+  data.forEach(image => {
+    const card = document.createElement("article");
+    card.className = "gallery-card";
+
+    const img = document.createElement("img");
+    img.src = getPublicImageUrl(image.image_path);
+    img.alt = image.title || "Service image";
+    img.loading = "lazy";
+
+    img.onerror = () => {
+      img.alt = "Image could not be loaded";
+    };
+
+    const info = document.createElement("div");
+    info.className = "gallery-info";
+
+    info.appendChild(createTextElement(
+      "h3", "", image.title || "Untitled image"
+    ));
+
+    info.appendChild(createTextElement(
+      "p", "", image.description || "No description."
+    ));
+
+    const actions = document.createElement("div");
+    actions.className = "gallery-actions";
+
+    const replaceButton = createTextElement(
+      "button", "replace-button", "Replace"
+    );
+    replaceButton.type = "button";
+
+    const deleteButton = createTextElement(
+      "button", "delete-button", "Delete"
+    );
+    deleteButton.type = "button";
+
+    replaceButton.addEventListener("click", () => replaceImage(image));
+    deleteButton.addEventListener("click", () => deleteImage(image));
+
+    actions.append(replaceButton, deleteButton);
+    info.appendChild(actions);
+
+    card.append(img, info);
+    galleryList.appendChild(card);
+  });
+}
+
+galleryService.addEventListener("change", loadGalleryImages);
+
+function validateImage(file) {
+  const allowedTypes = [
+    "image/jpeg",
+    "image/png",
+    "image/webp",
+    "image/gif"
+  ];
+
+  if (!file) {
+    throw new Error("Please choose an image.");
+  }
+
+  if (!allowedTypes.includes(file.type)) {
+    throw new Error("Please choose a JPG, PNG, WEBP or GIF image.");
+  }
+
+  if (file.size > 8 * 1024 * 1024) {
+    throw new Error("Image size must not exceed 8 MB.");
+  }
+}
+
+function makeImagePath(serviceId, file) {
+  const extension = file.name.split(".").pop().toLowerCase();
+  return serviceId + "/" + crypto.randomUUID() + "." + extension;
+}
+
+/* UPLOAD */
+
+galleryForm.addEventListener("submit", async event => {
+  event.preventDefault();
+
+  galleryMessage.textContent = "";
+  galleryError.textContent = "";
+  uploadButton.disabled = true;
+
+  try {
+    const serviceId = galleryService.value;
+    const file = imageFile.files[0];
+
+    if (!serviceId) {
+      throw new Error("Please select a service.");
+    }
+
+    validateImage(file);
+
+    const path = makeImagePath(serviceId, file);
+
+    galleryMessage.textContent = "Uploading image...";
+
+    const { error: uploadError } = await supabase.storage
+      .from("service-images")
+      .upload(path, file, {
+        cacheControl: "3600",
+        upsert: false
+      });
+
+    if (uploadError) throw uploadError;
+
+    const { error: insertError } = await supabase
+      .from("service_images")
+      .insert({
+        service_id: serviceId,
+        image_path: path,
+        title: imageTitle.value.trim(),
+        description: imageDescription.value.trim()
+      });
+
+    if (insertError) {
+      await supabase.storage
+        .from("service-images")
+        .remove([path]);
+
+      throw insertError;
+    }
+
+    galleryForm.reset();
+    galleryMessage.textContent = "Image uploaded successfully!";
+
+    await loadGalleryImages();
+
+  } catch (error) {
+    galleryError.textContent = error.message;
+    galleryMessage.textContent = "";
+  } finally {
+    uploadButton.disabled = false;
+  }
+});
+
+/* REPLACE IMAGE */
+
+async function replaceImage(image) {
+  const picker = document.createElement("input");
+  picker.type = "file";
+  picker.accept = "image/jpeg,image/png,image/webp,image/gif";
+
+  picker.addEventListener("change", async () => {
+    const file = picker.files[0];
+    if (!file) return;
+
+    galleryMessage.textContent = "";
+    galleryError.textContent = "";
+
+    try {
+      validateImage(file);
+
+      galleryMessage.textContent = "Uploading replacement image...";
+
+      const newPath = makeImagePath(image.service_id, file);
+
+      const { error: uploadError } = await supabase.storage
+        .from("service-images")
+        .upload(newPath, file, {
+          cacheControl: "3600",
+          upsert: false
+        });
+
+      if (uploadError) throw uploadError;
+
+      const { error: updateError } = await supabase
+        .from("service_images")
+        .update({ image_path: newPath })
+        .eq("id", image.id);
+
+      if (updateError) {
+        await supabase.storage
+          .from("service-images")
+          .remove([newPath]);
+
+        throw updateError;
+      }
+
+      const { error: removeError } = await supabase.storage
+        .from("service-images")
+        .remove([image.image_path]);
+
+      if (removeError) {
+        galleryMessage.textContent =
+          "New image saved, but the old storage file could not be removed.";
+      } else {
+        galleryMessage.textContent = "Image replaced successfully!";
+      }
+
+      await loadGalleryImages();
+
+    } catch (error) {
+      galleryError.textContent = error.message;
+      galleryMessage.textContent = "";
+    }
+  });
+
+  picker.click();
+}
+
+/* DELETE IMAGE */
+
+async function deleteImage(image) {
+  const confirmed = window.confirm(
+    "Delete this image from the gallery? This cannot be undone."
+  );
+
+  if (!confirmed) return;
+
+  galleryMessage.textContent = "";
+  galleryError.textContent = "";
+
+  // Delete the database record and return the deleted row
+  const { data: deletedRows, error: deleteRowError } = await supabase
+    .from("service_images")
+    .delete()
+    .eq("id", image.id)
+    .select("id");
+
+  if (deleteRowError) {
+    galleryError.textContent =
+      "Database deletion failed: " + deleteRowError.message;
+    return;
+  }
+
+  // Check whether a database row was actually deleted
+  if (!deletedRows || deletedRows.length === 0) {
+    galleryError.textContent =
+      "No database record was deleted. Check your Supabase permissions and image ID.";
+    return;
+  }
+
+  // Delete the actual image from Supabase Storage
+  const { error: storageError } = await supabase.storage
+    .from("service-images")
+    .remove([image.image_path]);
+
+  if (storageError) {
+    galleryMessage.textContent =
+      "Database record deleted, but storage deletion failed: " +
+      storageError.message;
+  } else {
+    galleryMessage.textContent = "Image deleted successfully!";
+  }
+
+  await loadGalleryImages();
+}
+
+/* SIGN OUT */
+
+document.getElementById("logoutButton")
+  .addEventListener("click", async () => {
+    await supabase.auth.signOut();
+    window.location.replace("login.html");
+  });
+
+/* START */
+
+if (await checkAdmin()) {
+  await loadServices();
+}
+</script>
+
+</body>
+</html>

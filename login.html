@@ -1,0 +1,351 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="theme-color" content="#0f2d52">
+
+  <title>Admin Login | Galaxy Digital Partners</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      background: #0f2d52;
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 420px;
+      padding: 40px;
+      border-radius: 16px;
+      background: white;
+      box-shadow: 0 15px 45px rgba(0,0,0,.2);
+    }
+
+    h1 {
+      color: #0f2d52;
+      font-size: 26px;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: #64748b;
+      margin-bottom: 30px;
+      line-height: 1.5;
+    }
+
+    label {
+      display: block;
+      margin: 18px 0 8px;
+      color: #24364b;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #d5dce5;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+    input:focus {
+      outline: 2px solid #eabf45;
+      border-color: #eabf45;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 25px;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      background: #eabf45;
+      color: #0f2d52;
+      font-weight: bold;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: .6;
+      cursor: wait;
+    }
+
+    #message {
+      margin-top: 18px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #b42318;
+    }
+
+    .back-link {
+      display: block;
+      margin-top: 25px;
+      text-align: center;
+      color: #64748b;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .back-link:hover {
+      color: #0f2d52;
+    }
+
+    @media (max-width: 450px) {
+      .login-card {
+        padding: 28px 22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="login-card">
+
+    <h1>Admin Login</h1>
+
+    <p class="subtitle">
+      Galaxy Digital Partners<br>
+      Sign in to manage website content.
+    </p>
+
+    <form id="loginForm">
+
+      <label for="email">Email Address</label>
+
+      <input
+        type="email"
+        id="email"
+        name="email"
+        placeholder="Admin email"
+        autocomplete="username"
+        required
+      >
+
+      <label for="password">Password</label>
+
+      <input
+        type="password"
+        id="password"
+        name="password"
+        placeholder="Your password"
+        autocomplete="current-password"
+        required
+      >
+
+      <button type="submit" id="loginButton">
+        Sign In
+      </button>
+
+      <p id="message" role="status" aria-live="polite"></p>
+
+    </form>
+
+    <a href="index.html" class="back-link">
+      ← Back to Website
+    </a>
+
+  </main>
+
+
+  <script type="module">
+
+    import { supabase } from "./supabase.js";
+
+
+    // ==========================================
+    // ELEMENTS
+    // ==========================================
+
+    const form = document.getElementById("loginForm");
+
+    const button = document.getElementById("loginButton");
+
+    const message = document.getElementById("message");
+
+
+    // ==========================================
+    // BUTTON STATE
+    // ==========================================
+
+    function setLoading(loading) {
+
+      button.disabled = loading;
+
+      button.textContent = loading
+        ? "Please wait..."
+        : "Sign In";
+
+    }
+
+
+    // ==========================================
+    // CHECK ADMIN ACCESS
+    // ==========================================
+
+    async function checkAdminAccess(userId) {
+
+      const { data, error } = await supabase
+
+        .from("admin_users")
+
+        .select("user_id")
+
+        .eq("user_id", userId)
+
+        .maybeSingle();
+
+      if (error) {
+        throw error;
+      }
+
+      return Boolean(data);
+
+    }
+
+
+    // ==========================================
+    // CHECK EXISTING SESSION
+    // ==========================================
+
+    async function checkExistingSession() {
+
+      try {
+
+        const {
+          data: { user },
+          error
+        } = await supabase.auth.getUser();
+
+        if (error) {
+          throw error;
+        }
+
+        if (!user) {
+          return;
+        }
+
+        const isAdmin = await checkAdminAccess(user.id);
+
+        if (isAdmin) {
+
+          window.location.replace("admin.html");
+
+          return;
+
+        }
+
+        await supabase.auth.signOut();
+
+      } catch (error) {
+
+        console.error("Session verification error:", error);
+
+      }
+
+    }
+
+
+    // ==========================================
+    // LOGIN
+    // ==========================================
+
+    form.addEventListener("submit", async event => {
+
+      event.preventDefault();
+
+      setLoading(true);
+
+      message.textContent = "";
+
+      const email = document
+        .getElementById("email")
+        .value
+        .trim();
+
+      const password = document
+        .getElementById("password")
+        .value;
+
+
+      try {
+
+        // Authenticate user.
+
+        const {
+          data,
+          error
+        } = await supabase.auth.signInWithPassword({
+
+          email,
+          password
+
+        });
+
+        if (error) {
+          throw error;
+        }
+
+
+        // Verify administrator permissions.
+
+        const isAdmin = await checkAdminAccess(data.user.id);
+
+
+        if (!isAdmin) {
+
+          await supabase.auth.signOut();
+
+          throw new Error(
+            "This account does not have administrator access."
+          );
+
+        }
+
+
+        // Redirect only verified administrators.
+
+        window.location.replace("admin.html");
+
+
+      } catch (error) {
+
+        console.error("Login error:", error);
+
+        message.textContent =
+          error.message || "Unable to sign in. Please try again.";
+
+        setLoading(false);
+
+      }
+
+    });
+
+
+    // ==========================================
+    // START
+    // ==========================================
+
+    checkExistingSession();
+
+  </script>
+
+</body>
+</html>
