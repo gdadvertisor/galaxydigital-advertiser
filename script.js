@@ -1,5 +1,5 @@
 // ==========================================
-// GALAXY DIGITAL PARTNERS
+// Galaxy Digital Advertisers
 // SHARED WEBSITE INTERACTIONS
 // ==========================================
 
