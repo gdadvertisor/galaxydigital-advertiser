@@ -1,351 +1,342 @@
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080b14">
 
-  <meta name="theme-color" content="#0f2d52">
+<title>Admin Login | Galaxy Digital Advertisers</title>
 
-  <title>Admin Login | Galaxy Digital Partners</title>
+<style>
+:root {
+  --bg: #080b14;
+  --panel: #101827;
+  --cyan: #32d9f5;
+  --purple: #9565ff;
+  --white: #f4f7ff;
+  --muted: #91a0b8;
+  --border: rgba(91, 180, 220, .2);
+  --red: #ff657a;
+}
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-    body {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      font-family: Arial, sans-serif;
-      background: #0f2d52;
-    }
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  color: var(--white);
+  background:
+    radial-gradient(ellipse at 15% 15%, rgba(99, 75, 200, .18), transparent 40%),
+    radial-gradient(ellipse at 90% 85%, rgba(0, 195, 230, .12), transparent 40%),
+    var(--bg);
+}
 
-    .login-card {
-      width: 100%;
-      max-width: 420px;
-      padding: 40px;
-      border-radius: 16px;
-      background: white;
-      box-shadow: 0 15px 45px rgba(0,0,0,.2);
-    }
+.login-container {
+  width: 100%;
+  max-width: 440px;
+}
 
-    h1 {
-      color: #0f2d52;
-      font-size: 26px;
-      margin-bottom: 10px;
-    }
+.brand {
+  text-align: center;
+  margin-bottom: 28px;
+}
 
-    .subtitle {
-      color: #64748b;
-      margin-bottom: 30px;
-      line-height: 1.5;
-    }
+.brand-icon {
+  color: var(--cyan);
+  font-size: 38px;
+  text-shadow: 0 0 20px rgba(50, 217, 245, .7);
+}
 
-    label {
-      display: block;
-      margin: 18px 0 8px;
-      color: #24364b;
-      font-weight: bold;
-      font-size: 14px;
-    }
+.brand h1 {
+  font-size: 24px;
+  margin-top: 8px;
+  letter-spacing: .3px;
+}
 
-    input {
-      width: 100%;
-      padding: 13px;
-      border: 1px solid #d5dce5;
-      border-radius: 8px;
-      font-size: 15px;
-    }
+.brand p {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 7px;
+}
 
-    input:focus {
-      outline: 2px solid #eabf45;
-      border-color: #eabf45;
-    }
+.login-card {
+  background: linear-gradient(145deg, #141e30, #0c1321);
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  padding: 35px;
+  box-shadow: 0 20px 65px rgba(0, 0, 0, .35);
+  position: relative;
+  overflow: hidden;
+}
 
-    button {
-      width: 100%;
-      margin-top: 25px;
-      padding: 14px;
-      border: none;
-      border-radius: 8px;
-      background: #eabf45;
-      color: #0f2d52;
-      font-weight: bold;
-      font-size: 15px;
-      cursor: pointer;
-    }
+.login-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 25%;
+  width: 50%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--purple), var(--cyan));
+  box-shadow: 0 0 15px var(--cyan);
+}
 
-    button:disabled {
-      opacity: .6;
-      cursor: wait;
-    }
+.login-card h2 {
+  font-size: 24px;
+  margin-bottom: 7px;
+}
 
-    #message {
-      margin-top: 18px;
-      font-size: 14px;
-      line-height: 1.5;
-      color: #b42318;
-    }
+.subtitle {
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 27px;
+}
 
-    .back-link {
-      display: block;
-      margin-top: 25px;
-      text-align: center;
-      color: #64748b;
-      text-decoration: none;
-      font-size: 14px;
-    }
+.field {
+  margin-bottom: 19px;
+}
 
-    .back-link:hover {
-      color: #0f2d52;
-    }
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #dce6f5;
+}
 
-    @media (max-width: 450px) {
-      .login-card {
-        padding: 28px 22px;
-      }
-    }
-  </style>
+input {
+  width: 100%;
+  padding: 13px 14px;
+  background: #080f1d;
+  border: 1px solid rgba(134, 166, 205, .22);
+  border-radius: 7px;
+  color: var(--white);
+  font-size: 14px;
+  outline: none;
+  transition: .2s;
+}
+
+input::placeholder {
+  color: #65758e;
+}
+
+input:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 3px rgba(50, 217, 245, .1);
+}
+
+button {
+  width: 100%;
+  padding: 13px;
+  border: none;
+  border-radius: 7px;
+  background: linear-gradient(110deg, #20cde9, #648bff);
+  color: #06111d;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  transition: .25s;
+  box-shadow: 0 0 18px rgba(50, 217, 245, .17);
+}
+
+button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+button:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+#loginError {
+  color: var(--red);
+  font-size: 13px;
+  margin-top: 15px;
+  overflow-wrap: anywhere;
+}
+
+#loginMessage {
+  color: var(--cyan);
+  font-size: 13px;
+  margin-top: 15px;
+  overflow-wrap: anywhere;
+}
+
+.footer {
+  text-align: center;
+  color: #718099;
+  font-size: 12px;
+  margin-top: 23px;
+}
+
+@media(max-width: 480px) {
+  .login-card {
+    padding: 25px 21px;
+  }
+
+  .brand h1 {
+    font-size: 21px;
+  }
+}
+</style>
 </head>
 
 <body>
 
-  <main class="login-card">
+<div class="login-container">
 
-    <h1>Admin Login</h1>
+  <div class="brand">
+    <div class="brand-icon">✦</div>
+    <h1>Galaxy Digital Advertisers</h1>
+    <p>Secure Administrator Access</p>
+  </div>
 
-    <p class="subtitle">
-      Galaxy Digital Partners<br>
-      Sign in to manage website content.
-    </p>
+  <section class="login-card">
+
+    <h2>Welcome Back</h2>
+    <p class="subtitle">Sign in to access your administrator dashboard.</p>
 
     <form id="loginForm">
 
-      <label for="email">Email Address</label>
+      <div class="field">
+        <label for="email">Email Address</label>
+        <input
+          type="email"
+          id="email"
+          placeholder="Enter your email address"
+          autocomplete="username"
+          required
+        >
+      </div>
 
-      <input
-        type="email"
-        id="email"
-        name="email"
-        placeholder="Admin email"
-        autocomplete="username"
-        required
-      >
-
-      <label for="password">Password</label>
-
-      <input
-        type="password"
-        id="password"
-        name="password"
-        placeholder="Your password"
-        autocomplete="current-password"
-        required
-      >
+      <div class="field">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          placeholder="Enter your password"
+          autocomplete="current-password"
+          required
+        >
+      </div>
 
       <button type="submit" id="loginButton">
         Sign In
       </button>
 
-      <p id="message" role="status" aria-live="polite"></p>
+      <p id="loginMessage" role="status"></p>
+      <p id="loginError" role="alert"></p>
 
     </form>
 
-    <a href="index.html" class="back-link">
-      ← Back to Website
-    </a>
+  </section>
 
-  </main>
+  <p class="footer">
+    © <span id="year"></span> Galaxy Digital Advertisers. All rights reserved.
+  </p>
 
+</div>
 
-  <script type="module">
+<script type="module">
+import { supabase } from "./supabase.js";
 
-    import { supabase } from "./supabase.js";
+const loginForm = document.getElementById("loginForm");
+const loginButton = document.getElementById("loginButton");
+const loginError = document.getElementById("loginError");
+const loginMessage = document.getElementById("loginMessage");
 
+document.getElementById("year").textContent =
+  new Date().getFullYear();
 
-    // ==========================================
-    // ELEMENTS
-    // ==========================================
+/* VERIFY ADMINISTRATOR */
 
-    const form = document.getElementById("loginForm");
+async function verifyAdmin(user) {
+  const { data: admin, error } = await supabase
+    .from("admin_users")
+    .select("user_id")
+    .eq("user_id", user.id)
+    .maybeSingle();
 
-    const button = document.getElementById("loginButton");
+  if (error) {
+    throw error;
+  }
 
-    const message = document.getElementById("message");
+  if (!admin) {
+    await supabase.auth.signOut();
+    throw new Error("You are not authorized to access the administrator dashboard.");
+  }
 
+  return true;
+}
 
-    // ==========================================
-    // BUTTON STATE
-    // ==========================================
+/* CHECK EXISTING SESSION */
 
-    function setLoading(loading) {
+async function checkExistingSession() {
+  try {
+    const { data, error } = await supabase.auth.getSession();
 
-      button.disabled = loading;
+    if (error) throw error;
 
-      button.textContent = loading
-        ? "Please wait..."
-        : "Sign In";
+    if (!data.session) return;
 
-    }
+    await verifyAdmin(data.session.user);
 
+    window.location.replace("admin.html");
 
-    // ==========================================
-    // CHECK ADMIN ACCESS
-    // ==========================================
+  } catch (error) {
+    loginError.textContent = error.message;
+  }
+}
 
-    async function checkAdminAccess(userId) {
+/* LOGIN */
 
-      const { data, error } = await supabase
+loginForm.addEventListener("submit", async event => {
+  event.preventDefault();
 
-        .from("admin_users")
+  loginError.textContent = "";
+  loginMessage.textContent = "";
 
-        .select("user_id")
+  loginButton.disabled = true;
+  loginButton.textContent = "Signing In...";
 
-        .eq("user_id", userId)
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
 
-        .maybeSingle();
-
-      if (error) {
-        throw error;
-      }
-
-      return Boolean(data);
-
-    }
-
-
-    // ==========================================
-    // CHECK EXISTING SESSION
-    // ==========================================
-
-    async function checkExistingSession() {
-
-      try {
-
-        const {
-          data: { user },
-          error
-        } = await supabase.auth.getUser();
-
-        if (error) {
-          throw error;
-        }
-
-        if (!user) {
-          return;
-        }
-
-        const isAdmin = await checkAdminAccess(user.id);
-
-        if (isAdmin) {
-
-          window.location.replace("admin.html");
-
-          return;
-
-        }
-
-        await supabase.auth.signOut();
-
-      } catch (error) {
-
-        console.error("Session verification error:", error);
-
-      }
-
-    }
-
-
-    // ==========================================
-    // LOGIN
-    // ==========================================
-
-    form.addEventListener("submit", async event => {
-
-      event.preventDefault();
-
-      setLoading(true);
-
-      message.textContent = "";
-
-      const email = document
-        .getElementById("email")
-        .value
-        .trim();
-
-      const password = document
-        .getElementById("password")
-        .value;
-
-
-      try {
-
-        // Authenticate user.
-
-        const {
-          data,
-          error
-        } = await supabase.auth.signInWithPassword({
-
-          email,
-          password
-
-        });
-
-        if (error) {
-          throw error;
-        }
-
-
-        // Verify administrator permissions.
-
-        const isAdmin = await checkAdminAccess(data.user.id);
-
-
-        if (!isAdmin) {
-
-          await supabase.auth.signOut();
-
-          throw new Error(
-            "This account does not have administrator access."
-          );
-
-        }
-
-
-        // Redirect only verified administrators.
-
-        window.location.replace("admin.html");
-
-
-      } catch (error) {
-
-        console.error("Login error:", error);
-
-        message.textContent =
-          error.message || "Unable to sign in. Please try again.";
-
-        setLoading(false);
-
-      }
-
+  try {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password
     });
 
+    if (error) throw error;
 
-    // ==========================================
-    // START
-    // ==========================================
+    await verifyAdmin(data.user);
 
-    checkExistingSession();
+    loginMessage.textContent = "Login successful. Redirecting...";
 
-  </script>
+    window.location.replace("admin.html");
+
+  } catch (error) {
+    loginError.textContent = error.message;
+
+    loginButton.disabled = false;
+    loginButton.textContent = "Sign In";
+  }
+});
+
+/* START */
+
+await checkExistingSession();
+</script>
 
 </body>
 </html>
