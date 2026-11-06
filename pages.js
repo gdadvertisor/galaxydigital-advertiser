@@ -2,7 +2,7 @@
 import { supabase } from "./supabase.js";
 
 // ==========================================
-// GALAXY DIGITAL PARTNERS
+// Galaxy Digital Advertisers
 // SERVICE DETAILS PAGE
 // ==========================================
 
@@ -253,7 +253,7 @@ async function loadService() {
     // Update browser tab title.
 
     document.title =
-      `${service.title} | Galaxy Digital Partners`;
+      `${service.title} | Galaxy Digital Advertisers`;
 
     displayService(service);
 
@@ -376,7 +376,7 @@ function displayService(service) {
         <h3>Interested in this service?</h3>
 
         <p>
-          Contact Galaxy Digital Partners to discuss
+          Contact Galaxy Digital Advertisers to discuss
           your website and potential opportunities.
         </p>
 
